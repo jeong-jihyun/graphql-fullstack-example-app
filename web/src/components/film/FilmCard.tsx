@@ -2,11 +2,11 @@ import { AspectRatio, Box, Image, Stack, Heading, useColorModeValue, Text } from
 import { FilmsQuery } from '../../generated/graphql';
 
 interface FilmCardProps {
-    film: FilmsQuery['films'][0];
+    film: FilmsQuery['films']['films'][0];
 }
 export function FilmCard({ film }: FilmCardProps): React.ReactElement {
     return (
-        <Box as="article" my={6}>
+        <Box as="article" my={6} key={film.id}>
             <Box maxW="250px" w={'full'} pt={3} overflow={'hidden'}>
                 <AspectRatio ratio={2 / 3}>
                     <Image src={film.posterImg} borderRadius='lg' />
