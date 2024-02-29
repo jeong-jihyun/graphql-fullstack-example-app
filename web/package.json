@@ -28,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen": "graph-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -46,6 +46,10 @@
     ]
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.2"
+    "@graphql-codegen/add": "^5.0.2",
+    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/typescript": "^4.0.6",
+    "@graphql-codegen/typescript-operations": "^4.2.0",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.0"
   }
 }

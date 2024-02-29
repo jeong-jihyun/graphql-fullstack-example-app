@@ -1,21 +1,7 @@
-import { gql, useQuery } from '@apollo/client'
-interface Film {
-    id: number;
-    title: string;
-    subtitle: string;
-}
-type FileQueryResult = { files: Film[] }
-const FILM_QUERY = gql`
-    query ExampleQuery{
-        films{
-            id
-            title
-            subtitle
-        }
-    }
-`
+import { useFilmsQuery } from '../../generated/graphql';
 const FilmList = () => {
-    const { data, loading, error } = useQuery<FileQueryResult>(FILM_QUERY);
+    const { data, loading, error } = useFilmsQuery();
+
     return (
         <>
             {loading && (<p> ...loading</p>)}
