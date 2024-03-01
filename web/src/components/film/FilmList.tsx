@@ -1,5 +1,5 @@
 import { Box, SimpleGrid, Skeleton } from '@chakra-ui/react';
-import { useFilmsQuery } from '../../generated/graphql';
+import { useFilmsQuery } from '../../graphql/queries/generated/graphql';
 import { FilmCard } from './FilmCard';
 import { Waypoint } from 'react-waypoint';
 const FilmList = () => {

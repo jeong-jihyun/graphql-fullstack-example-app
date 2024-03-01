@@ -1,5 +1,9 @@
-import { Film } from '../entities/Film';
 
+/**
+ * https://github.com/hwasurr/graphql-book-fullstack-project/blob/master/project/server/src/data/ghibli.ts
+ * download
+ * */
+import { Film } from '../entities/Film';
 interface Cut {
   id: number;
   filmId: number;

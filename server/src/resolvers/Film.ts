@@ -6,6 +6,9 @@ import { PaginatedFilms } from '../entities/PaginatedFilms';
 
 @Resolver(Film)
 export class FilmResolver {
+  //
+  // 이전에 데이타 추출 방식을 아래 pagination 변경처리
+  //
   // @Query(() => [Film])
   // films(): Film[] {
   //   return ghibliData.films;

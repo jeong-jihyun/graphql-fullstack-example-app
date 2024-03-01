@@ -1,5 +1,5 @@
 import { AspectRatio, Box, Image, Stack, Heading, useColorModeValue, Text } from '@chakra-ui/react';
-import { FilmsQuery } from '../../generated/graphql';
+import { FilmsQuery } from '../../graphql/queries/generated/graphql';
 
 interface FilmCardProps {
     film: FilmsQuery['films']['films'][0];
