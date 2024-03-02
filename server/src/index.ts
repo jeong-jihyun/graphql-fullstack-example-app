@@ -5,6 +5,7 @@ import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import http from 'http';
 import { buildSchema } from 'type-graphql';
 import { FilmResolver } from './resolvers/Film';
+import { CutResolver } from './resolvers/Cut';
 
 async function main() {
   const app = express();
@@ -21,7 +22,8 @@ async function main() {
     //     },
     // },
     schema: await buildSchema({
-      resolvers: [FilmResolver],
+      // 책에서는 CutResolver를 추가하는 내용이 빠져있는 상태로 확인
+      resolvers: [FilmResolver, CutResolver],
     }),
     plugins: [ApolloServerPluginLandingPageLocalDefault()],
   });
