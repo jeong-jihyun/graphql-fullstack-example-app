@@ -51,6 +51,13 @@ yarn add react-waypoint
 yarn add react-router-dom
 ```
 
+이미지 최적화
+
+```
+yarn add react-lazyload
+yarn add --dev @types/react-lazyload
+```
+
 https://chakra-ui.com/ 해당UI에 대해서 적용 방안에 대해서는 chakra-ui확인 필요
 
 1. createApolloCache 정리
