@@ -16,8 +16,11 @@
     "@types/react-dom": "^18.2.19",
     "framer-motion": "^6.5.1",
     "graphql": "^16.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.0",
     "react-icons": "^3.11.0",
     "react-lazyload": "^3.2.0",
     "react-router-dom": "^6.22.2",
@@ -54,6 +57,8 @@
     "@graphql-codegen/typescript": "^4.0.6",
     "@graphql-codegen/typescript-operations": "^4.2.0",
     "@graphql-codegen/typescript-react-apollo": "^4.3.0",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/nanoid": "^3.0.0",
     "@types/react-lazyload": "^3.2.3"
   }
 }

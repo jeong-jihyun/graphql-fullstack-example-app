@@ -58,6 +58,12 @@ yarn add react-lazyload
 yarn add --dev @types/react-lazyload
 ```
 
+회원가입
+
+```
+yarn add react-hook-form
+```
+
 https://chakra-ui.com/ 해당UI에 대해서 적용 방안에 대해서는 chakra-ui확인 필요
 
 1. createApolloCache 정리

@@ -25,3 +25,30 @@ TypeGraphQL install
 ```
 yarn add type-graphql
 ```
+
+typorm database connection
+
+```
+yarn add typeorm pg
+npx typeorm init --name MyProject --database postgres
+
+```
+
+typeorm database mysql change
+
+```
+yarn add mysql2
+```
+
+user resolver
+
+```
+yarn add class-validator argon2
+```
+
+Login
+
+```
+yarn add nanoid jsonwebtoken
+yarn add --dev @types/nanoid @types/jsonwebtoken
+```
