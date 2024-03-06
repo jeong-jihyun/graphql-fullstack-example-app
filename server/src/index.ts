@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import http from 'http';
 import 'reflect-metadata';
@@ -6,7 +7,9 @@ import { AppDataSource } from './db/db-client';
 
 async function main() {
   const app = express();
-  //console.log(__dirname);
+  // 쿠키 파서 설정
+  app.use(cookieParser());
+
   await AppDataSource.initialize();
 
   const apolloServer = await createApolloServer();
@@ -22,6 +25,7 @@ async function main() {
   });
 
   const httpServer = http.createServer(app);
+
   httpServer.listen(process.env.PORT || 4000, () => {
     if (process.env.NODE_ENV !== 'production') {
       console.log(`

@@ -1,29 +1,20 @@
-import { ApolloServerPluginLandingPageLocalDefault, AuthenticationError } from 'apollo-server-core';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { ApolloServer } from 'apollo-server-express';
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import { buildSchema } from 'type-graphql';
+import redis from '../redis/redis-client';
 import { CutResolver } from '../resolvers/Cut';
 import { FilmResolver } from '../resolvers/Film';
 import { UserResolver } from '../resolvers/User';
-import { DEFAULT_SECRET_KEY, JwtVerifiedUser, verifyAccessTokenFromRequestHeaders } from '../utils/jwt-auth';
+import { JwtVerifiedUser, verifyAccessTokenFromRequestHeaders } from '../utils/jwt-auth';
 // express context에 할당
+// redis add
 export interface MyContext {
   req: Request;
   res: Response;
   verifiedUser: JwtVerifiedUser;
+  redis: typeof redis;
 }
-
-// 엑세스 토큰 검증
-export const verifyAccessToken = (accessToken?: string): JwtVerifiedUser | null => {
-  if (!accessToken) return null;
-  try {
-    const verified = jwt.verify(accessToken, process.env.JWT_SECRET_KEY || DEFAULT_SECRET_KEY) as JwtVerifiedUser;
-    return verified;
-  } catch {
-    throw new AuthenticationError('access token expired');
-  }
-};
 
 // ApolloServer에 설정 반영
 const createApolloServer = async (): Promise<ApolloServer> => {
@@ -38,7 +29,7 @@ const createApolloServer = async (): Promise<ApolloServer> => {
     context: ({ req, res }) => {
       // 엑세스 토큰 검증
       const verified = verifyAccessTokenFromRequestHeaders(req.headers);
-      return { req, res, verifiedUser: verified };
+      return { req, res, verifiedUser: verified, redis };
     },
   });
 };

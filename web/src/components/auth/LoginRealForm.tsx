@@ -3,17 +3,20 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { LoginMutationVariables, useLoginMutation } from '../../generated/graphql';
 import { useNavigate } from 'react-router-dom';
-
+/**
+ * 로그인 요청
+ * @returns 
+ */
 const LoginRealForm = (): React.ReactElement => {
     const history = useNavigate();
     const { register, handleSubmit, formState: { errors }, setError } = useForm<LoginMutationVariables>();
     const [login, { loading }] = useLoginMutation();
     const onSubmit = async (formData: LoginMutationVariables) => {
         const { data } = await login({ variables: formData });
-        console.log(data);
+        //console.log(data);
         if (data?.login.errors) {
             data.login.errors.forEach((err) => {
-                console.log(err.message)
+                //econsole.log(err.message)
                 const field = 'loginInput.';
                 setError((field + (err.field === "email" ? 'emailOrUsername' : err.field)) as Parameters<typeof setError>[0], {
                     message: err.message

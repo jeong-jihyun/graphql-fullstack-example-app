@@ -3,12 +3,17 @@ import { SignUpMutationVariables, useSignUpMutation } from '../../generated/grap
 import { Button, Divider, FormControl, FormErrorMessage, FormLabel, Input, Stack, useToast } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-
+/**
+ * 회원가입 요청
+ * @returns 
+ */
 const SignUpRealForm = () => {
+    // signup mutation hook call
     const [signUp, { loading }] = useSignUpMutation();
     const { register, handleSubmit, formState: { errors } } = useForm<SignUpMutationVariables>();
     const history = useNavigate();
     const toast = useToast();
+
     const onSubmit = async (data: SignUpMutationVariables) => {
         const { signUpInput } = data;
         return signUp({ variables: { signUpInput } }).then((res) => {
@@ -23,6 +28,7 @@ const SignUpRealForm = () => {
             return err;
         })
     }
+
     return (
         <Stack as={'form'} spacing={4} width={400} onSubmit={handleSubmit(onSubmit)}>
             <FormControl isInvalid={!!errors.signUpInput?.email}>

@@ -1,17 +1,19 @@
-import { Avatar, Box, Button, Flex, Link, Stack, useColorModeValue, useQuery } from '@chakra-ui/react'
+import { useApolloClient } from '@apollo/client'
+import { Avatar, Box, Button, Flex, Link, Menu, MenuButton, MenuItem, MenuList, Stack, useColorModeValue } from '@chakra-ui/react'
 import React, { useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { ColorModeSwitcher } from '../../ColorModeSwitcher'
-import { useMeQuery } from '../../generated/graphql'
+import { ColorModeSwitcher } from '../ColorModeSwitcher'
+import { useLogoutMutation, useMeQuery } from '../../generated/graphql'
 
 const Navbar = (): React.ReactElement => {
-    const accessToken = localStorage.getItem('access_token')
-    const { data } = useMeQuery({ skip: !accessToken })
+    const accessToken = localStorage.getItem('access_token');
+
+    //console.log(accessToken);
+    const { data } = useMeQuery({ skip: !accessToken });
+    //console.log(data);
     // 로그인 상태 확인
     const isLoggedIn = useMemo(() => {
-        console.log('accessToken >>>', accessToken);
-        console.log('data >>>', data?.me?.id);
-
+        //console.log(accessToken)
         if (accessToken) return data?.me?.id;
         return false;
     }, [accessToken, data?.me?.id])
@@ -38,10 +40,31 @@ const Navbar = (): React.ReactElement => {
     )
 }
 const LoggedInNavbarItem = (): React.ReactElement => {
+    const client = useApolloClient();
+    const [logout, { loading }] = useLogoutMutation();
+
+    async function onLogoutClick() {
+        try {
+            await logout();
+            localStorage.removeItem('access_token')
+            await client.resetStore();
+        } catch (e) {
+            console.log(e)
+        }
+    }
     return (
         <Stack justify={'flex-end'} alignItems={'center'} direction={'row'} spacing={3}>
             <ColorModeSwitcher />
-            <Avatar size={'sm'} />
+            <Menu>
+                <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
+                    <Avatar size={'sm'} />
+                </MenuButton>
+                <MenuList>
+                    <MenuItem isDisabled={loading} onClick={onLogoutClick}>
+                        로그아웃
+                    </MenuItem>
+                </MenuList>
+            </Menu>
         </Stack>
     );
 }
