@@ -3,7 +3,7 @@ import { IsEmail, IsString } from 'class-validator';
 import jwt from 'jsonwebtoken';
 import { Arg, Ctx, Field, InputType, Mutation, ObjectType, Query, Resolver, UseMiddleware } from 'type-graphql';
 import { MyContext } from '../apollo/createApolloServer';
-import { AppDataSource } from '../db/db-client';
+// import { AppDataSource } from '../db/db-client';
 import User from '../entities/User';
 import { isAuthenticated } from '../middlewares/isAuthenticated';
 import {
@@ -92,7 +92,7 @@ export class UserResolver {
   async signUp(@Arg('signUpInput') signUpInput: SignUpInput): Promise<User> {
     const { email, username, password } = signUpInput;
     const hashedPw = await argon2.hash(password);
-    const newUser = AppDataSource.getRepository(User).create({
+    const newUser = User.create({
       email,
       username,
       password: hashedPw,

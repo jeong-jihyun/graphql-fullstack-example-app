@@ -71,3 +71,11 @@ redis-cli
 yarn add cookie-parser
 yarn add --dev @types/cookie-parser
 ```
+
+데이터로더 추가
+
+```
+yarn add dataloader
+```
+
+graphql-upload 설치

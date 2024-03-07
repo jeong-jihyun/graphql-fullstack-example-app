@@ -17,6 +17,13 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type CreateOrUpdateCutReviewInput = {
+  /** 감상평 내용 */
+  contents: Scalars['String']['input'];
+  /** 명장면 번호 */
+  cutId: Scalars['Int']['input'];
+};
+
 export type Cut = {
   __typename?: 'Cut';
   film?: Maybe<Film>;
@@ -24,8 +31,25 @@ export type Cut = {
   filmId: Scalars['Int']['output'];
   /** 명장면 고유 아이디 */
   id: Scalars['Int']['output'];
+  isVoted: Scalars['Boolean']['output'];
   /** 명장면 사진 주소 */
   src: Scalars['String']['output'];
+  votesCount: Scalars['Int']['output'];
+};
+
+export type CutReview = {
+  __typename?: 'CutReview';
+  /** 감상평 내용 */
+  contents: Scalars['String']['output'];
+  /** 생성 일자 */
+  createdAt: Scalars['String']['output'];
+  /** 명장면 번호 */
+  cutId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  isMine: Scalars['Boolean']['output'];
+  /** 수정 일자 */
+  updatedAt: Scalars['String']['output'];
+  user: User;
 };
 
 export type Director = {
@@ -80,10 +104,23 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createOrUpdateCutReview?: Maybe<CutReview>;
+  deleteReview: Scalars['Boolean']['output'];
   login: LoginResponse;
   logout: Scalars['Boolean']['output'];
   refreshAccessToken?: Maybe<RefreshAccessTokenResponse>;
   signUp: User;
+  vote: Scalars['Boolean']['output'];
+};
+
+
+export type MutationCreateOrUpdateCutReviewArgs = {
+  cutReviewInput: CreateOrUpdateCutReviewInput;
+};
+
+
+export type MutationDeleteReviewArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -96,6 +133,11 @@ export type MutationSignUpArgs = {
   signUpInput: SignUpInput;
 };
 
+
+export type MutationVoteArgs = {
+  cutId: Scalars['Int']['input'];
+};
+
 export type PaginatedFilms = {
   __typename?: 'PaginatedFilms';
   cursor?: Maybe<Scalars['Int']['output']>;
@@ -105,6 +147,7 @@ export type PaginatedFilms = {
 export type Query = {
   __typename?: 'Query';
   cut?: Maybe<Cut>;
+  cutReviews: Array<CutReview>;
   cuts: Array<Cut>;
   film?: Maybe<Film>;
   films: PaginatedFilms;
@@ -115,6 +158,13 @@ export type Query = {
 
 export type QueryCutArgs = {
   cutId: Scalars['Int']['input'];
+};
+
+
+export type QueryCutReviewsArgs = {
+  cutId: Scalars['Int']['input'];
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  take?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -151,19 +201,29 @@ export type User = {
   createdAt: Scalars['String']['output'];
   /** 유저 이메일 */
   email: Scalars['String']['output'];
+  /** 사용자ID */
   id: Scalars['Int']['output'];
+  /** 비밀번호 */
+  password: Scalars['String']['output'];
   /** 업데이트 일자 */
   updatedAt: Scalars['String']['output'];
   /** 유저 이름 */
   username: Scalars['String']['output'];
 };
 
+export type CreateOrUpdateCutReviewMutationVariables = Exact<{
+  cutReviewInput: CreateOrUpdateCutReviewInput;
+}>;
+
+
+export type CreateOrUpdateCutReviewMutation = { __typename?: 'Mutation', createOrUpdateCutReview?: { __typename?: 'CutReview', contents: string, cutId: number, id: number, createdAt: string, isMine: boolean, user: { __typename?: 'User', username: string, email: string } } | null };
+
 export type CutQueryVariables = Exact<{
   cutId: Scalars['Int']['input'];
 }>;
 
 
-export type CutQuery = { __typename?: 'Query', cut?: { __typename?: 'Cut', id: number, src: string, film?: { __typename?: 'Film', id: number, title: string } | null } | null };
+export type CutQuery = { __typename?: 'Query', cut?: { __typename?: 'Cut', id: number, src: string, votesCount: number, isVoted: boolean, film?: { __typename?: 'Film', id: number, title: string } | null } | null, cutReviews: Array<{ __typename?: 'CutReview', id: number, contents: string, isMine: boolean, user: { __typename?: 'User', username: string, email: string } }> };
 
 export type CutsQueryVariables = Exact<{
   filmId: Scalars['Int']['input'];
@@ -171,6 +231,13 @@ export type CutsQueryVariables = Exact<{
 
 
 export type CutsQuery = { __typename?: 'Query', cuts: Array<{ __typename?: 'Cut', id: number, src: string }> };
+
+export type DeleteCutReviewMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteCutReviewMutation = { __typename?: 'Mutation', deleteReview: boolean };
 
 export type FilmQueryVariables = Exact<{
   filmId: Scalars['Int']['input'];
@@ -216,7 +283,55 @@ export type SignUpMutationVariables = Exact<{
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', email: string, username: string, createdAt: string, updatedAt: string, id: number } };
 
+export type VoteMutationVariables = Exact<{
+  cutId: Scalars['Int']['input'];
+}>;
 
+
+export type VoteMutation = { __typename?: 'Mutation', vote: boolean };
+
+
+export const CreateOrUpdateCutReviewDocument = gql`
+    mutation createOrUpdateCutReview($cutReviewInput: CreateOrUpdateCutReviewInput!) {
+  createOrUpdateCutReview(cutReviewInput: $cutReviewInput) {
+    contents
+    cutId
+    id
+    user {
+      username
+      email
+    }
+    createdAt
+    isMine
+  }
+}
+    `;
+export type CreateOrUpdateCutReviewMutationFn = Apollo.MutationFunction<CreateOrUpdateCutReviewMutation, CreateOrUpdateCutReviewMutationVariables>;
+
+/**
+ * __useCreateOrUpdateCutReviewMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateCutReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateCutReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateCutReviewMutation, { data, loading, error }] = useCreateOrUpdateCutReviewMutation({
+ *   variables: {
+ *      cutReviewInput: // value for 'cutReviewInput'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateCutReviewMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrUpdateCutReviewMutation, CreateOrUpdateCutReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateOrUpdateCutReviewMutation, CreateOrUpdateCutReviewMutationVariables>(CreateOrUpdateCutReviewDocument, options);
+      }
+export type CreateOrUpdateCutReviewMutationHookResult = ReturnType<typeof useCreateOrUpdateCutReviewMutation>;
+export type CreateOrUpdateCutReviewMutationResult = Apollo.MutationResult<CreateOrUpdateCutReviewMutation>;
+export type CreateOrUpdateCutReviewMutationOptions = Apollo.BaseMutationOptions<CreateOrUpdateCutReviewMutation, CreateOrUpdateCutReviewMutationVariables>;
 export const CutDocument = gql`
     query cut($cutId: Int!) {
   cut(cutId: $cutId) {
@@ -225,6 +340,17 @@ export const CutDocument = gql`
     film {
       id
       title
+    }
+    votesCount
+    isVoted
+  }
+  cutReviews(cutId: $cutId) {
+    id
+    contents
+    isMine
+    user {
+      username
+      email
     }
   }
 }
@@ -303,6 +429,37 @@ export type CutsQueryHookResult = ReturnType<typeof useCutsQuery>;
 export type CutsLazyQueryHookResult = ReturnType<typeof useCutsLazyQuery>;
 export type CutsSuspenseQueryHookResult = ReturnType<typeof useCutsSuspenseQuery>;
 export type CutsQueryResult = Apollo.QueryResult<CutsQuery, CutsQueryVariables>;
+export const DeleteCutReviewDocument = gql`
+    mutation deleteCutReview($id: Int!) {
+  deleteReview(id: $id)
+}
+    `;
+export type DeleteCutReviewMutationFn = Apollo.MutationFunction<DeleteCutReviewMutation, DeleteCutReviewMutationVariables>;
+
+/**
+ * __useDeleteCutReviewMutation__
+ *
+ * To run a mutation, you first call `useDeleteCutReviewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCutReviewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCutReviewMutation, { data, loading, error }] = useDeleteCutReviewMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCutReviewMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCutReviewMutation, DeleteCutReviewMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteCutReviewMutation, DeleteCutReviewMutationVariables>(DeleteCutReviewDocument, options);
+      }
+export type DeleteCutReviewMutationHookResult = ReturnType<typeof useDeleteCutReviewMutation>;
+export type DeleteCutReviewMutationResult = Apollo.MutationResult<DeleteCutReviewMutation>;
+export type DeleteCutReviewMutationOptions = Apollo.BaseMutationOptions<DeleteCutReviewMutation, DeleteCutReviewMutationVariables>;
 export const FilmDocument = gql`
     query film($filmId: Int!) {
   film(filmId: $filmId) {
@@ -590,3 +747,34 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const VoteDocument = gql`
+    mutation vote($cutId: Int!) {
+  vote(cutId: $cutId)
+}
+    `;
+export type VoteMutationFn = Apollo.MutationFunction<VoteMutation, VoteMutationVariables>;
+
+/**
+ * __useVoteMutation__
+ *
+ * To run a mutation, you first call `useVoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [voteMutation, { data, loading, error }] = useVoteMutation({
+ *   variables: {
+ *      cutId: // value for 'cutId'
+ *   },
+ * });
+ */
+export function useVoteMutation(baseOptions?: Apollo.MutationHookOptions<VoteMutation, VoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument, options);
+      }
+export type VoteMutationHookResult = ReturnType<typeof useVoteMutation>;
+export type VoteMutationResult = Apollo.MutationResult<VoteMutation>;
+export type VoteMutationOptions = Apollo.BaseMutationOptions<VoteMutation, VoteMutationVariables>;

@@ -8,14 +8,14 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-//import { CutReview } from './CutReview';
-//import { CutVote } from './CutVote';
+import { CutVote } from './CutVote';
+import { CutReview } from './CutReview';
 //import Notification from './Notification';
 
 @ObjectType()
 @Entity()
 export default class User extends BaseEntity {
-  @Field(() => Int)
+  @Field(() => Int, { description: '사용자ID' })
   @PrimaryGeneratedColumn()
   id!: number;
 
@@ -27,6 +27,7 @@ export default class User extends BaseEntity {
   @Column({ unique: true, comment: '유저 이메일' })
   email!: string;
 
+  @Field({ description: '비밀번호' })
   @Column({ comment: '비밀번호' })
   password!: string;
 
@@ -42,11 +43,11 @@ export default class User extends BaseEntity {
   @UpdateDateColumn({ comment: '업데이트 일자' })
   updatedAt!: Date;
 
-  // @OneToMany(() => CutVote, (cutVote) => cutVote.user)
-  // cutVotes: CutVote[];
+  @OneToMany(() => CutVote, (cutVote) => cutVote.user)
+  cutVotes: CutVote[];
 
-  // @OneToMany(() => CutReview, (cutReview) => cutReview.user)
-  // cutReviews: CutReview[];
+  @OneToMany(() => CutReview, (cutReview) => cutReview.user)
+  cutReviews: CutReview[];
 
   // @OneToMany(() => Notification, (noti) => noti.user)
   // notifications: Notification[];
