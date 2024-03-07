@@ -79,3 +79,8 @@ yarn add dataloader
 ```
 
 graphql-upload 설치
+
+```
+yarn add graphql-upload
+yarn add --dev @types/graphql-upload
+```
