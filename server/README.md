@@ -80,7 +80,9 @@ yarn add dataloader
 
 graphql-upload 설치
 
+> 이전버젼으로 사용해야만 버젼 호환이 됨
+
 ```
-yarn add graphql-upload
-yarn add --dev @types/graphql-upload
+yarn add graphql-upload@^13.0.0
+yarn add --dev @types/graphql-upload@^8.0.7
 ```

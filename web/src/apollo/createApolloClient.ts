@@ -3,9 +3,9 @@ import { onError } from '@apollo/client/link/error';
 import { createApolloCache } from './createApolloCache';
 import { setContext } from '@apollo/client/link/context';
 import { refreshAccessToken } from './auth';
+//import { createUploadLink } from 'apollo-upload-client';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
-
 /**
  * 에러링크 추가된 항목
  * @description
@@ -43,6 +43,16 @@ const httpLink = new HttpLink({
   credentials: 'include',
 });
 
+/**
+ * 업로드 링크 설정
+ */
+//const httpUploadLink = createUploadLink({
+//  uri: 'http://localhost:4000/graphql',
+//  fetchOptions: 'include',
+//});
+/**
+ * 액세스 토큰
+ */
 const authLink = setContext((request, prevContext) => {
   const accessToken = localStorage.getItem('access_token');
   return {
@@ -52,9 +62,17 @@ const authLink = setContext((request, prevContext) => {
     },
   };
 });
-export const createApolloClient = (): ApolloClient<NormalizedCacheObject> =>
-  new ApolloClient({
+
+/**
+ *
+ * @returns
+ */
+export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
+  const apolloClient = new ApolloClient({
     // new InMemoryCache Add
     cache: createApolloCache(),
-    link: from([authLink, errorLink, httpLink]),
+    // httpUploadLink as any
+    link: from([authLink, errorLink, httpLink]), //
   });
+  return apolloClient;
+};

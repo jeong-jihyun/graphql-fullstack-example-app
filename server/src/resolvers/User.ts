@@ -1,3 +1,4 @@
+import { createWriteStream } from 'fs';
 import * as argon2 from 'argon2';
 import { IsEmail, IsString } from 'class-validator';
 import jwt from 'jsonwebtoken';
@@ -12,7 +13,8 @@ import {
   createRefreshToken,
   setRefreshTokenHeader,
 } from '../utils/jwt-auth';
-
+//import GraphQLUpload, { FileUpload } from 'graphql-upload/GraphQLUpload.mjs';
+// import moduleName from 'graphql-upload/GraphQLUpload.mjs'
 @InputType()
 export class SignUpInput {
   @Field()
@@ -65,17 +67,56 @@ class RefreshAccessTokenResponse {
   @Field()
   accessToken: string;
 }
-
+/**
+ * 사용자 리졸버
+ */
 @Resolver(User)
 export class UserResolver {
   /**
-   * 로그아웃
+   * 업로드 뮤테이션
+   * @param param0
+   * @param param1
+   * @returns
+   */
+  // @UseMiddleware(isAuthenticated)
+  // @Mutation(() => Boolean)
+  // async uploadProfileImage(
+  //   @Ctx() { verifiedUser }: MyContext,
+  //   @Arg('file', () => GraphQLUpload)
+  //   { createReadStream, filename }: FileUpload,
+  // ): Promise<boolean> {
+  //   const realFileName = verifiedUser.userId + filename;
+  //   const filePath = `public/${realFileName}`;
+  //   // 뮤테이션은 CRUD가 발생하는 항목에 지정
+  //   return new Promise((resolve, reject) =>
+  //     // FileUpload에서 읽어서 filePath 경로에 저장
+  //     createReadStream()
+  //       .pipe(createWriteStream(filePath))
+  //       .on('finish', async () => {
+  //         // 완료후 이미지를 업데이트 처리
+  //         await User.update(
+  //           {
+  //             id: verifiedUser.userId,
+  //           },
+  //           {
+  //             profileImage: realFileName,
+  //           },
+  //         );
+
+  //         return resolve(true);
+  //       })
+  //       .on('error', () => reject(Error('file upload failed'))),
+  //   );
+  // }
+  /**
+   * 로그아웃 뮤테이션
    * @param param0
    * @returns
    */
   @Mutation(() => Boolean)
   @UseMiddleware(isAuthenticated)
   async logout(@Ctx() { verifiedUser, res, redis }: MyContext): Promise<boolean> {
+    // 뮤테이션은 CRUD가 발생하는 항목에 지정
     if (verifiedUser) {
       setRefreshTokenHeader(res, '');
       await redis.del(String(verifiedUser.userId));
@@ -92,6 +133,7 @@ export class UserResolver {
   async signUp(@Arg('signUpInput') signUpInput: SignUpInput): Promise<User> {
     const { email, username, password } = signUpInput;
     const hashedPw = await argon2.hash(password);
+    // 뮤테이션은 CRUD가 발생하는 항목에 지정
     const newUser = User.create({
       email,
       username,

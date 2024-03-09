@@ -4,11 +4,18 @@ import http from 'http';
 import 'reflect-metadata';
 import createApolloServer from './apollo/createApolloServer';
 import { AppDataSource } from './db/db-client';
+//import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
+// const {
+//   GraphQLUpload,
+//   graphqlUploadExpress, // A Koa implementation is also exported.
+// } = require('graphql-upload');
 
 async function main() {
   const app = express();
   // 쿠키 파서 설정
   app.use(cookieParser());
+  // app.use(graphqlUploadExpress({ maxFileSize: 1024 * 1000 * 5, maxFiles: 1 }));
+  app.use(express.static('public'));
 
   await AppDataSource.initialize();
 

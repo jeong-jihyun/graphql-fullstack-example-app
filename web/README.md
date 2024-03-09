@@ -58,10 +58,18 @@ yarn add react-lazyload
 yarn add --dev @types/react-lazyload
 ```
 
-회원가입
+리액트 훅 폼 설치
 
 ```
 yarn add react-hook-form
+```
+
+업로드
+
+```
+yarn add apollo-upload-client
+yarn add --dev @types/apollo-upload-client
+
 ```
 
 https://chakra-ui.com/ 해당UI에 대해서 적용 방안에 대해서는 chakra-ui확인 필요
