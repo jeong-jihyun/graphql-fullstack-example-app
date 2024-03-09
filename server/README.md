@@ -80,6 +80,12 @@ yarn add dataloader
 
 graphql-upload 설치
 
+subsciption 설정
+
+```
+yarn add graphql-subscriptions subscriptions-transport-ws
+```
+
 > 이전버젼으로 사용해야만 버젼 호환이 됨
 
 ```

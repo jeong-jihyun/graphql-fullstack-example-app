@@ -4,6 +4,8 @@ import http from 'http';
 import 'reflect-metadata';
 import createApolloServer from './apollo/createApolloServer';
 import { AppDataSource } from './db/db-client';
+import { createSchema } from './apollo/createSchema';
+
 //import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 // const {
 //   GraphQLUpload,
@@ -18,8 +20,10 @@ async function main() {
   app.use(express.static('public'));
 
   await AppDataSource.initialize();
+  const schema = await createSchema();
 
-  const apolloServer = await createApolloServer();
+  const httpServer = http.createServer(app);
+  const apolloServer = await createApolloServer(schema, httpServer);
   // await 삽입하지 않아서 에러원인을 찾지 못하는 현상이 발생함.
   await apolloServer.start();
   // 아폴로 스튜디오를 허용하도록 설정
@@ -31,7 +35,7 @@ async function main() {
     },
   });
 
-  const httpServer = http.createServer(app);
+  // const httpServer = http.createServer(app);
 
   httpServer.listen(process.env.PORT || 4000, () => {
     if (process.env.NODE_ENV !== 'production') {

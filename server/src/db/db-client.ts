@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import User from '../entities/User';
 import { CutVote } from '../entities/CutVote';
 import { CutReview } from '../entities/CutReview';
+import Notification from '../entities/Notification';
 
 // export const ceateDataBase = async (): Promise<Connection> =>
 //   createConnection({
@@ -16,6 +17,7 @@ import { CutReview } from '../entities/CutReview';
 //     entities: [User],
 //   });
 
+// entities 생성시 아래에 정의를 해야 한다.
 export const AppDataSource = new DataSource({
   type: 'mysql',
   host: process.env.DB_ENDPOINT || 'localhost',
@@ -25,7 +27,7 @@ export const AppDataSource = new DataSource({
   database: 'image_shop',
   synchronize: true,
   logging: true,
-  entities: [User, CutVote, CutReview],
+  entities: [User, CutVote, CutReview, Notification],
   //entities: [__dirname + './**/*.{js,ts}'],
   migrations: [],
   subscribers: [],

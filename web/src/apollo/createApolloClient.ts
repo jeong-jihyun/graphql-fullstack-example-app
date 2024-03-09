@@ -1,11 +1,16 @@
-import { ApolloClient, HttpLink, NormalizedCacheObject, from, fromPromise } from '@apollo/client';
+import { ApolloClient, HttpLink, NormalizedCacheObject, from, fromPromise, split } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { createApolloCache } from './createApolloCache';
 import { setContext } from '@apollo/client/link/context';
+//import { WebSocketLink } from '@apollo/client/link/ws';
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { refreshAccessToken } from './auth';
+import { getMainDefinition } from '@apollo/client/utilities';
 //import { createUploadLink } from 'apollo-upload-client';
+import { createClient } from 'graphql-ws';
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
+
 /**
  * 에러링크 추가된 항목
  * @description
@@ -62,6 +67,23 @@ const authLink = setContext((request, prevContext) => {
     },
   };
 });
+const wsLink = new GraphQLWsLink(
+  createClient({
+    url: 'ws://localhost:4000/graphql',
+    connectionParams: () => ({
+      Authorization: localStorage.getItem('access_token') ? `Bearer ${localStorage.getItem('access_token')}` : '',
+    }),
+  }),
+);
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+  },
+  from([wsLink]),
+  from([authLink, errorLink, httpLink]),
+);
 
 /**
  *
@@ -69,10 +91,11 @@ const authLink = setContext((request, prevContext) => {
  */
 export const createApolloClient = (): ApolloClient<NormalizedCacheObject> => {
   const apolloClient = new ApolloClient({
+    uri: 'http://localhost:4000/graphql',
     // new InMemoryCache Add
     cache: createApolloCache(),
     // httpUploadLink as any
-    link: from([authLink, errorLink, httpLink]), //
+    link: splitLink, //
   });
   return apolloClient;
 };

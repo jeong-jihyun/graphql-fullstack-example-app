@@ -4,7 +4,7 @@ import React, { useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { useLogoutMutation, useMeQuery, } from '../../generated/graphql'
 import { ColorModeSwitcher } from '../ColorModeSwitcher'
-
+import Notification from '../notification/Notification'
 const Navbar = (): React.ReactElement => {
     const accessToken = localStorage.getItem('access_token');
 
@@ -75,6 +75,8 @@ const LoggedInNavbarItem = (): React.ReactElement => {
     return (
         <Stack justify={'flex-end'} alignItems={'center'} direction={'row'} spacing={3}>
             <ColorModeSwitcher />
+            {/* 알림추가 */}
+            <Notification />
             <Menu>
                 <MenuButton as={Button} rounded={'full'} variant={'link'} cursor={'pointer'}>
                     <Avatar size={'sm'} src={profileImage} />
