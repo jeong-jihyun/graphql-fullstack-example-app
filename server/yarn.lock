@@ -368,6 +368,11 @@
   resolved "https://registry.npmjs.org/@types/cors/-/cors-2.8.12.tgz"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
+"@types/dotenv-flow@3.3.3":
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/@types/dotenv-flow/-/dotenv-flow-3.3.3.tgz#d8bdbb08f35c0a62869b8ce72796055569a44258"
+  integrity sha512-aJjBsKw4bfGjvaRwrxBtEOfYZxCAq+LiFTpZ4DGTEK2b9eLVt/IAClapSxMfgV4Mi/2bIBKKjoTCO0lOh4ACLg==
+
 "@types/express-serve-static-core@4.17.31":
   version "4.17.31"
   resolved "https://registry.npmjs.org/@types/express-serve-static-core/-/express-serve-static-core-4.17.31.tgz"
@@ -1036,9 +1041,9 @@ diff@^4.0.1:
   resolved "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
-dotenv@^16.0.3:
+dotenv@16.4.5, dotenv@^16.0.3:
   version "16.4.5"
-  resolved "https://registry.npmjs.org/dotenv/-/dotenv-16.4.5.tgz"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
   integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
 eastasianwidth@^0.2.0:

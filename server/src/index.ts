@@ -5,14 +5,18 @@ import 'reflect-metadata';
 import createApolloServer from './apollo/createApolloServer';
 import { AppDataSource } from './db/db-client';
 import { createSchema } from './apollo/createSchema';
-
+import dotenv from 'dotenv';
 //import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs';
 // const {
 //   GraphQLUpload,
 //   graphqlUploadExpress, // A Koa implementation is also exported.
 // } = require('graphql-upload');
 
+dotenv.config();
 async function main() {
+  //console.log(__dirname + '\\' + '.env');
+  //console.log(process.env);
+  console.log('process.env.DB_HOST', process.env.DB_HOST);
   const app = express();
   // 쿠키 파서 설정
   app.use(cookieParser());

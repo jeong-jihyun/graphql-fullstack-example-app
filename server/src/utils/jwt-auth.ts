@@ -2,10 +2,11 @@ import { Response } from 'express';
 import { IncomingHttpHeaders } from 'http';
 import jwt from 'jsonwebtoken';
 import User from '../entities/User';
-
-export const DEFAULT_SECRET_KEY = 'secret-key';
+import dotenv from 'dotenv';
+dotenv.config();
+//export const DEFAULT_SECRET_KEY = process.env.JWT_SECRET_KEY;
 // 리프레시 토큰 발급
-export const REFRESH_JWT_SECRET_KEY = 'secret-key';
+//export const REFRESH_JWT_SECRET_KEY = process.env.JWT_REFRESH_SECRET_KEY;
 
 export interface JwtVerifiedUser {
   userId: User['id'];
@@ -23,7 +24,7 @@ export const createAccessToken = (user: User): string => {
     {
       userId: user.id,
     },
-    process.env.JWT_SECRET_KEY || DEFAULT_SECRET_KEY,
+    process.env.JWT_SECRET_KEY || '',
     {
       expiresIn: '10m', //expiresIn: '30m', → 10s
     },
@@ -45,7 +46,7 @@ export const verifyAccessTokenFromRequestHeaders = (headers: IncomingHttpHeaders
 // 리프레시 토큰 발급
 export const createRefreshToken = (user: User): string => {
   //const userData: JwtVerifiedUser = ;
-  return jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET_KEY || REFRESH_JWT_SECRET_KEY, {
+  return jwt.sign({ userId: user.id }, process.env.JWT_REFRESH_SECRET_KEY || '', {
     expiresIn: '10s',
   });
 };
@@ -63,7 +64,7 @@ export const setRefreshTokenHeader = (res: Response, refreshToken: string): void
 export const verifyAccessToken = (accessToken?: string): JwtVerifiedUser | null => {
   if (!accessToken) return null;
   //try {
-  const verified = jwt.verify(accessToken, process.env.JWT_SECRET_KEY || DEFAULT_SECRET_KEY);
+  const verified = jwt.verify(accessToken, process.env.JWT_SECRET_KEY || '');
   return verified as JwtVerifiedUser;
   // } catch (err) {
   //   console.error(`access token expired: ${err}`);

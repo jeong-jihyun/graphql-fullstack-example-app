@@ -7,14 +7,12 @@ import { MyContext } from '../apollo/createApolloServer';
 // import { AppDataSource } from '../db/db-client';
 import User from '../entities/User';
 import { isAuthenticated } from '../middlewares/isAuthenticated';
-import {
-  REFRESH_JWT_SECRET_KEY,
-  createAccessToken,
-  createRefreshToken,
-  setRefreshTokenHeader,
-} from '../utils/jwt-auth';
+import { createAccessToken, createRefreshToken, setRefreshTokenHeader } from '../utils/jwt-auth';
+import dotenv from 'dotenv';
 //import GraphQLUpload, { FileUpload } from 'graphql-upload/GraphQLUpload.mjs';
 // import moduleName from 'graphql-upload/GraphQLUpload.mjs'
+dotenv.config();
+
 @InputType()
 export class SignUpInput {
   @Field()
@@ -225,7 +223,7 @@ export class UserResolver {
 
     let tokenData: any = null;
     try {
-      tokenData = jwt.verify(refreshToken, REFRESH_JWT_SECRET_KEY);
+      tokenData = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY || '');
     } catch (e) {
       console.error(e);
       return null;
