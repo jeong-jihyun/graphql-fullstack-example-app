@@ -1,5 +1,4 @@
 import React from 'react'
-import { Notification as INotification } from '../../generated/graphql'
 import { Box, MenuItem, Text } from '@chakra-ui/react'
 interface NotificationItemProp {
     //notification: INotification
